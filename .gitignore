@@ -1,4 +1,4 @@
-# Data (contains shopping list)
+# Data files (user's shopping list - private)
 data/items.json
 
 # Secrets
@@ -8,6 +8,27 @@ data/.dashboard_secret
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
 
 # Logs
 *.log
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
