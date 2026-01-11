@@ -1,0 +1,13 @@
+# Data (contains shopping list)
+data/items.json
+
+# Secrets
+data/.dashboard_secret
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
