@@ -50,6 +50,9 @@ class Grabbit:
         "ikea": "IKEA",
         "nordstrom": "Nordstrom",
         "rei": "REI",
+        "indian store": "Indian Store",
+        "indianstore": "Indian Store",
+        "indian grocery": "Indian Store",
     }
 
     def __init__(self, store: GrabbitStore = None):
