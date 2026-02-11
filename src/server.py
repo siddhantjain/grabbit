@@ -33,10 +33,8 @@ class GrabbitHandler(BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(data).encode())
 
     def _check_auth(self, path):
-        """Check if the path contains the secret."""
-        if not DASHBOARD_SECRET:
-            return True
-        return f"/{DASHBOARD_SECRET}" in path
+        """Auth disabled - running on Tailscale."""
+        return True
 
     def do_GET(self):
         parsed = urlparse(self.path)
@@ -98,6 +96,21 @@ class GrabbitHandler(BaseHTTPRequestHandler):
             item_id = data.get("id")
             result = grabbit.delete(item_id)
             self._send_json(result)
+        elif clean_path == "/api/update":
+            item_id = data.pop("id", None)
+            if item_id:
+                result = grabbit.update(item_id, **data)
+                self._send_json(result)
+            else:
+                self._send_json({"error": "Missing id"}, 400)
+        elif clean_path == "/api/restore":
+            # Convenience: set status back to needed
+            item_id = data.get("id")
+            if item_id:
+                result = grabbit.update(item_id, status="needed", bought_at=None)
+                self._send_json(result)
+            else:
+                self._send_json({"error": "Missing id"}, 400)
         else:
             self._send_json({"error": "Unknown endpoint"}, 404)
 
@@ -479,7 +492,7 @@ def generate_dashboard_html() -> str:
 </html>'''
 
 
-def run_server(port=4005):
+def run_server(port=4002):
     server = HTTPServer(("0.0.0.0", port), GrabbitHandler)
     print(f"🐰 Grabbit running on http://0.0.0.0:{port}/{DASHBOARD_SECRET}/")
     server.serve_forever()
